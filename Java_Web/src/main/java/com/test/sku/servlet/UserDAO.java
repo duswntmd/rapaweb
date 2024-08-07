@@ -100,6 +100,37 @@ public class UserDAO
 	      return null;
    }
    
+   public boolean updatePwd(String uid, String newPwd) {
+       conn = getConn();
+       try {
+           pstmt = conn.prepareStatement("UPDATE users SET userpwd = ? WHERE userid = ?");
+           pstmt.setString(1, newPwd);
+           pstmt.setString(2, uid);
+           int updatedRows = pstmt.executeUpdate();
+           return updatedRows > 0;
+       } catch (SQLException sqle) {
+           sqle.printStackTrace();
+       } finally {
+           closeAll();
+       }
+       return false;
+   }
+   
+   public boolean deleteUser(String uid) {
+       conn = getConn();
+       try {
+           pstmt = conn.prepareStatement("DELETE FROM users WHERE userid = ?");
+           pstmt.setString(1, uid);
+           int deletedRows = pstmt.executeUpdate();
+           return deletedRows > 0;
+       } catch (SQLException sqle) {
+           sqle.printStackTrace();
+       } finally {
+           closeAll();
+       }
+       return false;
+   }
+   
    private void closeAll() {
       try {
          if(rs!=null) rs.close();
