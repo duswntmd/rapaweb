@@ -38,6 +38,7 @@ if (list == null) {
 <%	  }
 %>
 </table>
+<a href="user?cmd=addForm"><button>이용자 정보추가</button></a>
 </main>
 </body>
 </html>

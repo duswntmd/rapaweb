@@ -131,6 +131,21 @@ public class UserDAO
        return false;
    }
    
+   public boolean addUser(User user) {
+       String sql = "INSERT INTO users(userid, userpwd) VALUES(?, ?)";
+       conn = getConn();
+       try (
+           PreparedStatement pstmt = conn.prepareStatement(sql)) {
+           pstmt.setString(1, user.getUid());
+           pstmt.setString(2, user.getPwd());
+           int rows = pstmt.executeUpdate();
+           return rows > 0;
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+       return false;
+   }
+   
    private void closeAll() {
       try {
          if(rs!=null) rs.close();

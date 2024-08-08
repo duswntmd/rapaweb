@@ -11,22 +11,46 @@
 	div:last-child { margin-top:0.3em; text-align:center; }
 	label { display:inline-block; width:3em; }
 </style>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script type="text/javascript">
-	function formCheck() {
-		var uid =  document.querySelector("#uid").value; // Document Object Model(DOM)
-		var pwd =  document.querySelector("#pwd").value; 
-		if(uid=="" || pwd== "") {
-			alert('아이디, 암호를 확인해주세요');
-			return false;
-		}
-		return true;
+function login() {
+	var uid = document.querySelector("#uid").value;
+	var pwd = document.querySelector("#pwd").value;
+	if (uid == "" || pwd == "") {
+		alert('아이디, 암호를 확인해주세요');
+		return false;
 	}
+	
+	var obj = {
+		cmd: 'login',
+		uid: uid,
+		pwd: pwd
+	};
+	
+	$.ajax({
+		url: 'user',
+		method: 'post',
+		data: obj,
+		dataType: 'json',
+		success: function(res) {
+			alert(res.ok ? '로그인 성공' : '로그인 실패');
+			if (res.ok) {
+                location.href = "user?cmd=list";
+            }
+		},
+		error: function(xhr, status, err) {
+			alert('에러: ' + err);
+		}
+	});
+	
+	return false; // 폼의 기본 제출 동작을 막음
+}
 </script>
 </head>
 <body>
 <div id="main">
 	<h3>로그인</h3>
-	<form action="user" method="post" onsubmit="return formCheck();">
+	<form action="user" method="post" onsubmit="return login();">
 		<input type="hidden" name="cmd" value="login">
 		<div><label for="uid">아이디</label>
 			<input type="text" name="uid" id="uid">
