@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@WebServlet("/pet")
 public class PetServlet extends HttpServlet 
 {
    /* Pet 판매점 사이트를 가정한 웹사이트 제작
@@ -24,7 +25,15 @@ public class PetServlet extends HttpServlet
     * webapp/img/pet : 모든 이미지 파일 저장
     * 기능 구현 : 추가, 목록, 검색, 수정, 삭제
     */
-   protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      
-   }
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("utf-8");
+        response.setContentType("text/html; charset=utf-8");
+        
+        PetService service = new PetService(request, response);
+        String viewPath = new PetService(request, response).process();
+        
+        if(viewPath != null) {
+            getServletContext().getRequestDispatcher(viewPath).forward(request, response);
+        }
+    }
 }
